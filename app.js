@@ -81,7 +81,45 @@ if (runmiddlewareFlag == false) {
   }
 }
 
-exports.main = test
+function pure(params = {}) {
+  const url = params.__ow_path;
+  const method = params.__ow_method;
+
+  function invoke(url, bodyJSON) {
+    return new Promise((resolve, reject) => {
+      app.runMiddleware(url, bodyJSON, (code, data) => {
+        if(code == 200)
+          resolve({body:data });
+        else 
+          reject({body: {code, data}})
+      })
+    });
+  }
+
+  const { promisify } = require('util')
+  const request = require("request")
+  const reqPromise = promisify(request[method]);
+  return (async () => {
+    let result;
+    if (runmiddlewareFlag == true) {
+      // via runmiddleware, there's a bug
+      //   TypeError: Cannot read property 'content-type' of undefined
+      //      at ServerResponse.getHeader (_http_outgoing.js:490:24)
+      //      at ServerResponse.res.get (/root/serverless-notifications/node_modules/express/lib/response.js:536:15)
+      // mongo is ok
+      result = await invoke(url, { method, body: params });
+    } else {
+      result = await reqPromise({
+        // url: `http://${host}:${port}/${url}`,
+        url: `http://localhost:3042${url}`,
+        json: params
+      })
+    }
+    return {body: result.body}
+  })();
+}
+
+exports.main = pure
 
 if (!module.parent) {
   (async ()=>{
@@ -91,7 +129,6 @@ if (!module.parent) {
 }
 
 function test(params = {}) {
-
   const url = params.url || '/user/5e9723ee71ffbe00909ed452';
   const method = params.__ow_method || 'get';
 

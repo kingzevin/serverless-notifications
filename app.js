@@ -69,11 +69,11 @@ app.listen(port, host, () =>
   logger.info(`notifications starting up, listening on ${host}:${port}`)
 )
 
-// function __guard__(value, transform) {
-//   return typeof value !== 'undefined' && value !== null
-//     ? transform(value)
-//     : undefined
-// }
+function __guard__(value, transform) {
+  return typeof value !== 'undefined' && value !== null
+    ? transform(value)
+    : undefined
+}
 
 exports.main = test
 

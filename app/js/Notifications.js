@@ -30,11 +30,8 @@ module.exports = Notifications = {
       user_id: ObjectId(user_id),
       templateKey: { $exists: true }
     }
-    return db.notifications.find(query, (err, notifications) =>{
-      // console.log('zevin: notifications')
-      // console.log(notifications)
+    return db.notifications.find(query, (err, notifications) =>
       callback(err, notifications)
-    }
     )
   },
 

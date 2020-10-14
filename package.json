@@ -2,7 +2,7 @@
   "name": "notifications-sharelatex",
   "version": "0.0.1",
   "description": "An API to handle user notifications",
-  "main": "app.js",
+  "main": "handler.js",
   "scripts": {
     "start": "node $NODE_APP_OPTIONS app.js",
     "test:acceptance:_run": "mocha --recursive --reporter spec --timeout 15000 --exit $@ test/acceptance/js",

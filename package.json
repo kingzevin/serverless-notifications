@@ -26,6 +26,6 @@
     "node-statsd": "0.0.3",
     "request": "^2.65.0",
     "settings-sharelatex": "^1.1.0",
-    "underscore": "1.4.4"
+    "underscore": "1.12.1"
   }
 }
